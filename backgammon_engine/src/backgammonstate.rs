@@ -1,4 +1,4 @@
-use crate::mov::{BackgammonMove, Player};
+use crate::backgammonmove::{BackgammonMove, Player};
 
 #[cfg(test)]
 mod test_Black {
@@ -41,11 +41,49 @@ mod test_Black {
     }
 
     #[test]
-    fn update_board_black_1() {
+    fn apply_move_black_1() {
         let mut initial_state = STARTING_GAME_STATE.clone();
         let move_black = BackgammonMove::new(Player::Black, 0, 2);
         let new_state = BackgammonState::apply_move_black(&initial_state, move_black);
         assert_eq!(new_state.board[2], 1);
+    }
+
+    fn apply_move_bearing_black_1() {
+        let mut initial_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: true,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let move_black = BackgammonMove::new(Player::Black, 23, 25);
+        let new_state = BackgammonState::apply_move_black(&initial_state, move_black);
+        assert_eq!(new_state.board[23], 3);
+        assert_eq!(new_state.black_outside, 1);
+    }
+
+    fn apply_move_bearing_black_2() {
+        let mut initial_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: true,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let move_black = BackgammonMove::new(Player::Black, 21, 23);
+        let new_state = BackgammonState::apply_move_black(&initial_state, move_black);
+        assert_eq!(new_state.board[23], 5);
+        assert_eq!(new_state.black_outside, 0);
     }
 }
 
@@ -147,7 +185,6 @@ impl BackgammonState {
         }
     }
 
-    // here refactor on the sense that we can also take bearing moves into account
     fn apply_move_black(
         game_state: &BackgammonState,
         move_black: BackgammonMove,
@@ -164,10 +201,15 @@ impl BackgammonState {
 
         new_game_state.board[move_black.from as usize] -= 1;
 
+        if new_game_state.black_bearing && move_black.to > 23 {
+            new_game_state.black_outside += 1;
+            return new_game_state;
+        }
+
         if game_state.board[move_black.to as usize] == -1 {
             new_game_state.white_caught += 1;
             new_game_state.board[move_black.from as usize] = 1;
-            new_game_state.black_bearing = Self::is_black_bearing(&new_game_state);
+            new_game_state.black_bearing = Self::is_black_bearing(&new_game_state); // might not be necessary to calculate that every time
             new_game_state.white_bearing = Self::is_white_bearing(&new_game_state);
             return new_game_state;
         }
@@ -206,7 +248,7 @@ impl BackgammonState {
 
     fn moves_right_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
         if game_state.black_bearing {
-            move_black.to as usize > 23 || Self::valid_to_field_black(game_state, move_black)
+            move_black.to > 23 || Self::valid_to_field_black(game_state, move_black)
         } else {
             Self::valid_to_field_black(game_state, move_black)
         }
@@ -224,20 +266,31 @@ impl BackgammonState {
         if game_state.black_bearing {
             move_black.from >= 18
         } else {
-            (move_black.from >= FIRST_FIELD && move_black.from <= LAST_FIELD)
-                && (move_black.to >= FIRST_FIELD && move_black.to <= LAST_FIELD)
+            Self::in_bounce(move_black)
         }
     }
 
-    fn valid_move_white(game_state: &BackgammonState, move_white: BackgammonMove) -> bool {
-        true
+    fn in_bounce(b_move: &BackgammonMove) -> bool {
+        (b_move.from >= FIRST_FIELD && b_move.from <= LAST_FIELD)
+            && (b_move.to >= FIRST_FIELD && b_move.to <= LAST_FIELD)
     }
 
-    fn is_inbounce_white(game_state: &BackgammonState, move_white: BackgammonMove) -> bool {
+    fn valid_move_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
+        return Self::is_inbounce_white(game_state, move_white);
+        //&& Self::moves_rigth_white(game_state, move_white);
+    }
+
+    fn moves_right_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
         if game_state.white_bearing {
-            move_white.from <= 6 // be careful with the bearing move generation
+            move_white.to < 0 ||
+        }
+    }
+
+    fn is_inbounce_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
+        if game_state.white_bearing {
+            move_white.from <= 6
         } else {
-            true
+            Self::in_bounce(move_white)
         }
     }
 
