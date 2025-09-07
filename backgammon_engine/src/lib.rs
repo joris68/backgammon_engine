@@ -1,2 +1,2 @@
-pub mod mov;
-pub mod state;
+pub mod backgammonmove;
+pub mod backgammonstate;

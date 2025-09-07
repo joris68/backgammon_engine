@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[derive(PartialEq)]
 pub enum Player {
     White,
@@ -21,3 +23,20 @@ impl PartialEq for BackgammonMove {
         self.from == other.from && self.to == other.to && self.player == other.player
     }
 }
+
+impl fmt::Display for BackgammonMove {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}: from {} to {}",
+            match self.player {
+                Player::White => "White",
+                Player::Black => "Black",
+            },
+            self.from,
+            self.to
+        )
+    }
+}
+
+
