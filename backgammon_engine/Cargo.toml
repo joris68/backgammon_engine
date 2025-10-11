@@ -1,6 +1,20 @@
 [package]
 name = "backgammon_engine"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
+description = "A Rust library that implements the core game logic for Backgammon. It models the Markov decision Process for the game of backgammon"
+authors = ["joris68"]
+license = "MIT"
+repository = "https://github.com/yourusername/backgammon_engine"
+homepage = "https://github.com/yourusername/backgammon_engine"
+documentation = "https://docs.rs/backgammon_engine"
+readme = "README.md"
+keywords = ["backgammon", "game", "engine", "ai", "boardgame"]
+categories = ["game-engines", "algorithms", "simulation", "monte-carlo]
 
 [dependencies]
+log = "0.4.28"
+
+[dev-dependencies]
+# For unit tests or examples
+pretty_assertions = "1.4.0"

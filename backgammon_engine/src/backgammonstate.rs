@@ -1,6 +1,7 @@
 use crate::backgammonmove::{BackgammonMove, Player};
 use std::fmt;
 use std::collections::HashSet;
+use crate::invariants::backgammonstate_invariant;
 
 #[cfg(test)]
 mod test_black {
@@ -674,7 +675,6 @@ impl BackgammonState {
     fn get_unused_dice(dice : &Vec<i32>, used_dice : &Vec<i32> ) -> Vec<i32> {
 
         let mut game_dice = dice.clone();
-
         for &d_used in used_dice {
              if let Some(index) = dice.iter().position(|&x| x == d_used) {
                 game_dice.remove(index);
@@ -748,11 +748,21 @@ impl BackgammonState {
         }
     }
 
-    pub fn generate_moves(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Vec<BackgammonState> {
+    fn is_state_valid(game_state : &BackgammonState) -> bool {
+        match backgammonstate_invariant(game_state) {
+            Ok(_)=> true,
+            Err(_) => false,
+        }
+    }
+
+    pub fn generate_moves(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Result<Vec<BackgammonState>, Box<dyn std::error::Error>> {
+        if !Self::is_state_valid(&game_state) {
+            return Err("Invalid game state given".into())
+        }
         if is_black {
-            return Self::generate_black_moves(&mut game_state, dice.clone());
+            Ok (Self::generate_black_moves(&mut game_state, dice.clone()))
         } else {
-            return Self::generate_moves_white(&mut game_state, dice.clone());
+            Ok (Self::generate_moves_white(&mut game_state, dice.clone()))
         }
     }  
 
