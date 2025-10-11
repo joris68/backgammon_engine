@@ -1,11 +1,12 @@
 use std::fmt;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum Player {
     White,
     Black,
 }
 
+#[derive(Copy, Clone, Debug)]
 pub struct BackgammonMove {
     pub player: Player,
     pub from: i32,
