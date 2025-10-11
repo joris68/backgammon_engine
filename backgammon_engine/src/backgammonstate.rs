@@ -169,6 +169,86 @@ mod test_black {
         println!("{:?}", game_state);
         assert_eq!(valid , true);
     }
+
+    #[test]
+    fn test_valid_moves_4() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::Black, 21, 24);
+        let valid = BackgammonState::valid_move_black(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_5() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::Black, 22, 20);
+        let valid = BackgammonState::valid_move_black(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_6() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::Black, -1, 2);
+        let valid = BackgammonState::valid_move_black(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_7() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::Black, 5, 3);
+        let valid = BackgammonState::valid_move_white(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
 }
 
 #[cfg(test)]
@@ -308,6 +388,86 @@ mod test_white {
         let valid = BackgammonState::valid_move_white(&game_state, &m);
         println!("{:?}", game_state);
         assert_eq!(valid , true);
+    }
+
+    #[test]
+    fn test_valid_moves_4() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::White, 2, -1);
+        let valid = BackgammonState::valid_move_white(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_5() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::White, 2, 4);
+        let valid = BackgammonState::valid_move_white(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_6() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::White, 24, 2);
+        let valid = BackgammonState::valid_move_white(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_7() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::White, 2, 5);
+        let valid = BackgammonState::valid_move_white(&game_state, &m);
+        println!("{:?}", game_state);
+        assert_eq!(valid , false);
     }
 }
 
@@ -600,13 +760,10 @@ impl BackgammonState {
 
     fn valid_move_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
         return Self::is_inbounce_black(game_state, move_black)
-            && Self::moves_right_black(game_state, move_black);
+            && Self::moves_right_black(game_state, move_black) && move_black.player == Player::Black && move_black.from < move_black.to;
     }
 
     fn moves_right_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
-        if move_black.from <= 0 {
-            return false;
-        }
         if game_state.black_bearing {
             move_black.to > 23 || Self::valid_to_field_black(game_state, move_black)
         } else {
@@ -641,6 +798,8 @@ impl BackgammonState {
     fn is_inbounce_white(game_state : &BackgammonState, move_white : &BackgammonMove) -> bool {
         if game_state.white_bearing {
             move_white.from <= 6
+        }else if game_state.white_caught > 0 {
+            move_white.from == 24
         } else {
             Self::in_bounce(move_white)
         }
@@ -652,13 +811,13 @@ impl BackgammonState {
     }
 
     fn valid_move_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
-        return Self::is_inbounce_white(game_state, move_white);
-        //&& Self::moves_rigth_white(game_state, move_white);
+        return Self::is_inbounce_white(game_state, move_white)
+        && Self::moves_right_white(game_state, move_white) && move_white.player == Player::White && move_white.from > move_white.to;
     }
 
     fn moves_right_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
         if game_state.white_bearing {
-            move_white.to > 23 || Self::valid_to_field_white(game_state, move_white)
+            move_white.to < 0 || Self::valid_to_field_white(game_state, move_white)
         } else {
             Self::valid_to_field_black(game_state, move_white)
         }
