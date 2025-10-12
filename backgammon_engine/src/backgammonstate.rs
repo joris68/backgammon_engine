@@ -148,7 +148,6 @@ mod test_black {
         };
         let m = BackgammonMove::new(Player::Black, 1, 2);
         let valid = valid_move_black(&game_state, &m);
-        println!("{:?}", game_state);
         assert_eq!(valid , true);
     }
 
@@ -707,7 +706,6 @@ impl BackgammonState {
     fn generate_white_game_states(game_state:  &mut BackgammonState, dice : Vec<i32> ) -> Vec<BackgammonState> {
         let mut all_states: HashSet<BackgammonState> = HashSet::new();
         fn backtrack_states(inner_state : BackgammonState, dice : Vec<i32>, all_states: &mut HashSet<BackgammonState>) -> () {
-            println!("{:?}", dice);
             if inner_state.ended {
                 if !all_states.contains(&inner_state) {
                     all_states.insert(inner_state.clone());
@@ -849,7 +847,14 @@ impl BackgammonState {
             new_game_state.white_bearing = is_white_bearing(&new_game_state);
             return new_game_state;
         }
-        panic!("I have missed the case with the backgammon move apply");
+        panic!(
+        "I have missed a case in apply_move_black!\n\n\
+         The unhandled combination was:\n\n\
+         Game State:\n{:#?}\n\n\
+         Backgammon Move:\n{:#?}",
+        game_state,
+        move_black
+        );
     }
 
     fn apply_move_white(
@@ -890,7 +895,14 @@ impl BackgammonState {
             new_game_state.white_bearing = is_white_bearing(&new_game_state);
             return new_game_state;
         }
-        panic!("I have missed the case with the backgammon move apply");
+        panic!(
+            "I have missed a case in apply_move_black!\n\n\
+            The unhandled combination was:\n\n\
+            Game State:\n{:#?}\n\n\
+            Backgammon Move:\n{:#?}",
+            game_state,
+            move_white
+        );
     }
 
     fn is_black_bearing(game_state: &BackgammonState) -> bool {

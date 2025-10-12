@@ -19,7 +19,7 @@ fn generate_dice(rng: &mut impl Rng) -> Vec<i32> {
 }
 
 fn pick_next_move(next_poss_states : &Vec<BackgammonState>, rng: &mut impl Rng) -> BackgammonState {
-    let die_dist = Uniform::new_inclusive(0, next_poss_states.len() - 1).unwrap();;
+    let die_dist = Uniform::new_inclusive(0, next_poss_states.len() - 1).unwrap();
     let index = die_dist.sample(rng);
     return next_poss_states[index];
 }   
@@ -30,23 +30,31 @@ fn test_public_api() {
     let mut is_black = true;
     let mut rng = thread_rng();
     let mut current_game_state = STARTING_GAME_STATE;
-    current_game_state.generate_possible_next_states()
 
     for x in 0..number_of_games {
         while !current_game_state.ended {
             let dice = generate_dice(&mut rng);
-            let next_poss_moves = generate_possible_next_states(&current_game_state, dice);
-            next_poss_states.map(|state| {
-            let res = backgammonstate_invariant(&state);
+            let next_poss_states = generate_possible_next_states(current_game_state, is_black, dice)
+                            .expect("Failed to generate possible next states");
+
+            for state in &next_poss_states {
+                let res = backgammonstate_invariant(state);
                 match res {
-                    Ok(_) => _,
-                    Err(_) => panic!("generate moves has yielded an invalid state"),
+                    Ok(_) => {},
+                    Err(err_msg) => panic!(
+                        "generate_moves has yielded an invalid state. Error: {}\n\n\
+                         State BEFORE move generation:\n{:#?}\n\n\
+                         The INVALID state that was generated:\n{:#?}",
+                        err_msg,
+                        current_game_state,
+                        state,
+                    ),
                 }
-            })
-            current_game_state = pick_next_move(&next_poss_moves, &mut rng);
+            }
+            current_game_state = pick_next_move(&next_poss_states, &mut rng);
             is_black = !is_black;
         }
-        if x % 100 == 0 {
+        if x % 10 == 0 {
             info!("so many games already done");
         }
     }
