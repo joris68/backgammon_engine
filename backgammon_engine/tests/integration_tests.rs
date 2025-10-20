@@ -3,7 +3,6 @@ use backgammon_engine::backgammonstate::generate_possible_next_states;
 use rand_distr::{Distribution, Uniform};
 use rand::{Rng, thread_rng};
 use backgammon_engine::invariants::backgammonstate_invariant;
-use log::{info, error};
 
 
 fn generate_dice(rng: &mut impl Rng) -> Vec<i32> {

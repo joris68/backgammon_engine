@@ -46,7 +46,7 @@ mod test_black {
 
     #[test]
     fn test_apply_move_black_1() {
-        let mut initial_state = STARTING_GAME_STATE.clone();
+        let initial_state = STARTING_GAME_STATE.clone();
         let move_black = BackgammonMove::new(Player::Black, 0, 2);
         let new_state = apply_move_black(&initial_state, move_black);
         assert_eq!(new_state.board[2], 1);
@@ -54,7 +54,7 @@ mod test_black {
 
     #[test]
     fn test_apply_move_bearing_black_1() {
-        let mut initial_state = BackgammonState {
+        let initial_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
             ],
@@ -74,7 +74,7 @@ mod test_black {
 
     #[test]
     fn test_apply_move_bearing_black_2() {
-        let mut initial_state = BackgammonState {
+        let initial_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
             ],
@@ -135,7 +135,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_1() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -154,7 +154,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_2() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -173,7 +173,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_3() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
             ],
@@ -193,7 +193,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_4() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
             ],
@@ -213,7 +213,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_5() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
             ],
@@ -233,7 +233,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_6() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
             ],
@@ -253,7 +253,7 @@ mod test_black {
 
     #[test]
     fn test_valid_moves_7() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -297,7 +297,7 @@ mod test_white {
     #[test]
     fn test_to_string_method() {
 
-        let mut initial_state = BackgammonState {
+        let initial_state = BackgammonState {
             board: [
                 -1, -12, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
             ],
@@ -315,7 +315,7 @@ mod test_white {
 
     #[test]
     fn test_bearing_moves() {
-        let mut initial_state = BackgammonState {
+        let initial_state = BackgammonState {
             board: [
                 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
             ],
@@ -354,7 +354,7 @@ mod test_white {
 
      #[test]
     fn test_valid_moves_1() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0,
             ],
@@ -374,7 +374,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_2() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -393,7 +393,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_3() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -413,7 +413,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_4() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -433,7 +433,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_5() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -453,7 +453,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_6() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
             ],
@@ -473,7 +473,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_7() {
-        let mut game_state = BackgammonState {
+        let game_state = BackgammonState {
             board: [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             ],
@@ -535,7 +535,7 @@ mod test_white {
 
     #[test]
     fn test_valid_moves_8() {
-        let mut state = BackgammonState {
+        let state = BackgammonState {
                 board: [
                     2,
                     0,
@@ -578,28 +578,28 @@ mod test_white {
 
     #[test]
     fn test_valid_dice_1() {
-        let mut game_state = STARTING_GAME_STATE;
+        let game_state = STARTING_GAME_STATE;
         let res = generate_possible_next_states(game_state, true, vec![1,2,3,4]);
         assert!(res.is_err());
     }
 
     #[test]
     fn test_valid_dice_2() {
-        let mut game_state = STARTING_GAME_STATE;
+        let game_state = STARTING_GAME_STATE;
         let res = generate_possible_next_states(game_state, true, vec![1,2]);
         assert!(res.is_ok());
     }
 
     #[test]
     fn test_valid_dice_3() {
-        let mut game_state = STARTING_GAME_STATE;
+        let game_state = STARTING_GAME_STATE;
         let res = generate_possible_next_states(game_state, true, vec![1,7]);
         assert!(res.is_err());
     }
 
     #[test]
     fn test_valid_dice_4() {
-        let mut game_state = STARTING_GAME_STATE;
+        let game_state = STARTING_GAME_STATE;
         let res = generate_possible_next_states(game_state, true, vec![4,4,4,4]);
         assert!(res.is_ok());
     }
@@ -866,7 +866,7 @@ impl BackgammonState {
 
     // add cross product here!
     fn insert_stones_black(
-        mut game_state: &BackgammonState,
+        game_state: &BackgammonState,
         dice: &Vec<i32>,
     ) -> (BackgammonState, Vec<i32>) {
     let mut dice_used = Vec::new();
@@ -896,7 +896,7 @@ impl BackgammonState {
 
     // add cross product here!
     fn insert_stones_white(
-    mut game_state: &BackgammonState,
+    game_state: &BackgammonState,
     dice: &Vec<i32>,
     ) -> (BackgammonState, Vec<i32>) {
         let mut dice_used = Vec::new();
