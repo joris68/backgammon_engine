@@ -34,7 +34,7 @@ fn test_public_api() {
     for x in 0..number_of_games {
         while !current_game_state.ended {
             let dice = generate_dice(&mut rng);
-            let next_poss_states = generate_possible_next_states(current_game_state, is_black, dice)
+            let next_poss_states = generate_possible_next_states(current_game_state, is_black, dice.clone())
                             .expect("Failed to generate possible next states");
 
             for state in &next_poss_states {
@@ -42,21 +42,28 @@ fn test_public_api() {
                 match res {
                     Ok(_) => {},
                     Err(err_msg) => panic!(
-                        "generate_moves has yielded an invalid state. Error: {}\n\n\
-                         State BEFORE move generation:\n{:#?}\n\n\
-                         The INVALID state that was generated:\n{:#?}",
+                        "Error: Backgammon state invariant violation detected.\n\
+                        generate_moves function has produced an invalid game state.\n\
+                        Details of the error: {}\n\n\
+                        State prior to move generation:\n{:#?}\n\n\
+                        Generated invalid state:\n{:#?}\n\n\
+                        Dice values for this move:\n{:#?}\n\n\
+                        Current turn: {:#?}",
                         err_msg,
                         current_game_state,
                         state,
+                        dice.clone(),
+                        is_black
                     ),
                 }
             }
             current_game_state = pick_next_move(&next_poss_states, &mut rng);
             is_black = !is_black;
         }
-        if x % 10 == 0 {
-            info!("so many games already done");
+        if x % 100 == 0 {
+            println!("So many games already done: {}", x);
+
         }
     }
-    info!("integration tests finished successfully");
+    println!("integration tests finished successfully");
 }
