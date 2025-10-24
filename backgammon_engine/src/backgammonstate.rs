@@ -2,7 +2,7 @@ use crate::backgammonmove::{BackgammonMove, Player};
 use std::fmt;
 use std::collections::HashSet;
 use crate::invariants::backgammonstate_invariant;
-use log::info;
+
 
 #[cfg(test)]
 mod test_black {
@@ -313,24 +313,24 @@ mod test_white {
     }
 
 
-    #[test]
-    fn test_bearing_moves() {
-        let initial_state = BackgammonState {
-            board: [
-                0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
-            ],
-            white_caught: 0,
-            black_caught: 0,
-            black_bearing: false,
-            white_bearing: false,
-            ended: false,
-            black_outside: 0,
-            white_outside: 0,
-        };
-        let dice = 3;
-        let moves = possible_bearing_moves_white(&initial_state, dice);
-        assert_eq!(moves.len(), 1)
-    }
+    // #[test]
+    // fn test_bearing_moves() {
+    //     let initial_state = BackgammonState {
+    //         board: [
+    //             0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
+    //         ],
+    //         white_caught: 0,
+    //         black_caught: 0,
+    //         black_bearing: false,
+    //         white_bearing: false,
+    //         ended: false,
+    //         black_outside: 0,
+    //         white_outside: 0,
+    //     };
+    //     let dice = 3;
+    //     let moves = possible_bearing_moves_white(&initial_state, dice);
+    //     assert_eq!(moves.len(), 1)
+    // }
 
     #[test]
     fn test_get_unused_items_1() {
@@ -606,13 +606,9 @@ mod test_white {
 
 }
 
-const LAST_FIELD_EXTENDED: i32 = 24;
-const FIRST_FIELD_EXTENDED: i32 = -1;
 
 const LAST_FIELD: i32 = 23;
 const FIRST_FIELD: i32 = 0;
-const BLACK_START_BEARING: i32 = 18;
-const WHITE_START_BEARING: i32 = 6;
 
 pub const STARTING_GAME_STATE: BackgammonState = BackgammonState {
     board: [
@@ -729,12 +725,8 @@ impl BackgammonState {
                                     .collect();             
                     for m in poss_moves.iter() {
                         let mut dice_copy = dice.clone();
-                        info!("dice before apply: {:?}", dice_copy);
-                        info!("the move to be applied: {:?}", m);
                         dice_copy.remove(m.1);
                         let new_state = apply_move_black(&inner_state, m.0);
-                        info!("dice after apply: {:?}", dice_copy);
-                        info!("new game state: {:?}", new_state);
                         backtrack_states(new_state.clone(), dice_copy, all_states)
                     }
                 }
@@ -810,12 +802,8 @@ impl BackgammonState {
                           
                     for m in poss_moves.iter() {
                         let mut dice_copy = dice.clone();
-                        info!("dice before apply: {:?}", dice_copy);
-                        info!("the move to be applied: {:?}", m);
                         dice_copy.remove(m.1);
                         let new_state = apply_move_white(&inner_state, m.0);
-                        info!("dice after apply: {:?}", dice_copy);
-                        info!("new game state: {:?}", new_state);
                         backtrack_states(new_state.clone(), dice_copy, all_states)
                     }
                 }
@@ -1113,31 +1101,31 @@ impl BackgammonState {
         }
     }
 
-    fn possible_bearing_moves_black(
-        game_state: &BackgammonState,
-        dice: i32,
-    ) -> Vec<BackgammonMove> {
-        return (18..23)
-            .filter(|&x| game_state.board[x] > 0)
-            .filter(|&x| {
-                let m = BackgammonMove::new(Player::Black, x as i32, x as i32 + dice);
-                valid_move_black(game_state, &m)
-            })
-            .map(|x| BackgammonMove::new(Player::Black, x as i32, x as i32 + dice))
-            .collect();
-    }
+    // fn possible_bearing_moves_black(
+    //     game_state: &BackgammonState,
+    //     dice: i32,
+    // ) -> Vec<BackgammonMove> {
+    //     return (18..23)
+    //         .filter(|&x| game_state.board[x] > 0)
+    //         .filter(|&x| {
+    //             let m = BackgammonMove::new(Player::Black, x as i32, x as i32 + dice);
+    //             valid_move_black(game_state, &m)
+    //         })
+    //         .map(|x| BackgammonMove::new(Player::Black, x as i32, x as i32 + dice))
+    //         .collect();
+    // }
 
-    fn possible_bearing_moves_white(
-        game_state: &BackgammonState,
-        dice: i32,
-    ) -> Vec<BackgammonMove> {
-        return (0..6)
-        .filter(|&x| game_state.board[x] <0 )
-        .filter(|&x| {
-            let m = BackgammonMove::new(Player::White, x as i32, x as i32 - dice);
-            valid_move_white(game_state, &m)
-        })
-        .map(|x| BackgammonMove::new(Player::White, x as i32, x as i32 - dice))
-        .collect();
-    }
+    // fn possible_bearing_moves_white(
+    //     game_state: &BackgammonState,
+    //     dice: i32,
+    // ) -> Vec<BackgammonMove> {
+    //     return (0..6)
+    //     .filter(|&x| game_state.board[x] <0 )
+    //     .filter(|&x| {
+    //         let m = BackgammonMove::new(Player::White, x as i32, x as i32 - dice);
+    //         valid_move_white(game_state, &m)
+    //     })
+    //     .map(|x| BackgammonMove::new(Player::White, x as i32, x as i32 - dice))
+    //     .collect();
+    // }
 

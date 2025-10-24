@@ -1,0 +1,8 @@
+[package]
+name = "test_program"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rand_distr = "0.5.1"
+rand = "0.9.2"
