@@ -1,5 +1,5 @@
 use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState};
-use backgammon_engine::backgammonstate::generate_possible_next_states;
+use backgammon_engine::backgammonstate::gen_poss_next_states;
 use rand_distr::{Distribution, Uniform};
 use rand::{Rng, thread_rng};
 use backgammon_engine::invariants::backgammonstate_invariant;
@@ -36,7 +36,7 @@ fn test_public_api() {
             // if current_game_state.white_outside > 0 || current_game_state.black_outside > 0 {
             //     println!("Something outside");
             // }
-            let next_poss_states = generate_possible_next_states(current_game_state, is_black, dice.clone())
+            let next_poss_states = gen_poss_next_states(current_game_state, is_black, dice.clone())
                             .expect("Failed to generate possible next states");
 
             for state in &next_poss_states {
@@ -68,7 +68,9 @@ fn test_public_api() {
                 break;
             }
         }
-        println!("Game finished with {} moves", counter)
+        if x % 2000 == 0 {
+            println!("Already game finished {} moves", x)
+        }
     }
 }
 

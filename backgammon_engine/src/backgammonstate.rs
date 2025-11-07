@@ -624,28 +624,28 @@ mod test_white {
     #[test]
     fn test_valid_dice_1() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![1,2,3,4]);
+        let res = gen_poss_next_states(game_state, true, vec![1,2,3,4]);
         assert!(res.is_err());
     }
 
     #[test]
     fn test_valid_dice_2() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![1,2]);
+        let res = gen_poss_next_states(game_state, true, vec![1,2]);
         assert!(res.is_ok());
     }
 
     #[test]
     fn test_valid_dice_3() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![1,7]);
+        let res = gen_poss_next_states(game_state, true, vec![1,7]);
         assert!(res.is_err());
     }
 
     #[test]
     fn test_valid_dice_4() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![4,4,4,4]);
+        let res = gen_poss_next_states(game_state, true, vec![4,4,4,4]);
         assert!(res.is_ok());
     }
 
@@ -946,8 +946,18 @@ impl BackgammonState {
         let count = dice.iter().filter(|&&x| x >= 0 && x <= 6).count();
         return count == dice.len() && (dice.len() == 2 || dice.len() == 4) && four_dice(&dice)
     }
-
-    pub fn generate_possible_next_states(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Result<Vec<BackgammonState>, Box<dyn std::error::Error>> {
+    /// Generates all possible next game states given the current state and the given dice.
+    /// 
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let mut starting_game_state = backgammon_engine::backgammonstate::STARTING_GAME_STATE;
+    /// let answer = backgammon_engine::backgammon_state::gen_poss_next_states();
+    ///
+    /// assert_eq!(6, answer);
+    /// ```
+    pub fn gen_poss_next_states(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Result<Vec<BackgammonState>, Box<dyn std::error::Error>> {
         if !is_state_valid(&game_state) {
             return Err("Invalid game state given".into())
         }
@@ -973,7 +983,7 @@ impl BackgammonState {
         //println!("{:?}", new_game_state);
         
         for &d in dice {
-            if game_state.black_caught > 0 && game_state.board[(d -1) as usize] >= 0 {
+            if game_state.black_caught > 0 && game_state.board[(d - 1) as usize] >= 0 {
             let move_black =  BackgammonMove::new(Player::Black, -1, d - 1);
                 let game_state_after_apply = apply_move_black(
                     &new_game_state,
