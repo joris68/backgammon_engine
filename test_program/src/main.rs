@@ -24,14 +24,18 @@ fn pick_next_move(next_poss_states : &Vec<BackgammonState>, rng: &mut impl Rng) 
 }
 
 fn test_public_api() {
-    let number_of_games = 5;
-    let mut is_black = true;
+    let number_of_games = 10000;
     let mut rng = thread_rng();
-    let mut current_game_state = STARTING_GAME_STATE;
 
     for x in 0..number_of_games {
+        let mut counter = 0;
+        let mut current_game_state = STARTING_GAME_STATE;
+        let mut is_black = true;
         while !current_game_state.ended {
             let dice = generate_dice(&mut rng);
+            // if current_game_state.white_outside > 0 || current_game_state.black_outside > 0 {
+            //     println!("Something outside");
+            // }
             let next_poss_states = generate_possible_next_states(current_game_state, is_black, dice.clone())
                             .expect("Failed to generate possible next states");
 
@@ -57,7 +61,14 @@ fn test_public_api() {
             }
             current_game_state = pick_next_move(&next_poss_states, &mut rng);
             is_black = !is_black;
+            counter += 1;
+            if counter > 10000 {
+                println!("Game broke because being too long");
+                println!("{}", current_game_state);
+                break;
+            }
         }
+        println!("Game finished with {} moves", counter)
     }
 }
 
