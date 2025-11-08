@@ -6,7 +6,8 @@ pub enum Player {
     Black,
 }
 /// Black moves from left ro right and white moves from right to left on the board array.
-/// Hence for black moves: from < to and for white moves to < from.
+/// Hence for black moves the invariant holds: from < to and for white moves to < from.
+/// And for all white moves the invariant holds: to < from.
 #[derive(Copy, Clone, Debug)]
 pub struct BackgammonMove {
     pub player: Player,
