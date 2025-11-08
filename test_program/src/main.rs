@@ -24,7 +24,7 @@ fn pick_next_move(next_poss_states : &Vec<BackgammonState>, rng: &mut impl Rng) 
 }
 
 fn test_public_api() {
-    let number_of_games = 10000;
+    let number_of_games = 100000;
     let mut rng = thread_rng();
 
     for x in 0..number_of_games {

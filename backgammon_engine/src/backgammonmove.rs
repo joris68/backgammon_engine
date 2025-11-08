@@ -5,7 +5,8 @@ pub enum Player {
     White,
     Black,
 }
-
+/// Black moves from left ro right and white moves from right to left on the board array.
+/// Hence for black moves: from < to and for white moves to < from.
 #[derive(Copy, Clone, Debug)]
 pub struct BackgammonMove {
     pub player: Player,

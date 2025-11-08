@@ -35,7 +35,7 @@ fn outside_and_bearing_white(game_state : &BackgammonState) -> bool {
     }
     true
 }
-
+/// Implements several state invariants for the game state object. This is mostly used for testing. And for input validation.
 pub fn backgammonstate_invariant(
     game_state: &BackgammonState
 ) -> Result<(), Box<dyn std::error::Error>> {
