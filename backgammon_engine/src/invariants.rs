@@ -35,46 +35,25 @@ fn outside_and_bearing_white(game_state : &BackgammonState) -> bool {
     }
     true
 }
-
+/// Implements several state invariants for the game state object. This is mostly used for testing. And for input validation.
 pub fn backgammonstate_invariant(
     game_state: &BackgammonState
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut error = false;
     if !correct_amount_stones_black(game_state) {
-        // info!(
-        //     "Game state: {:?} has incorrect amount of black stones on the board",
-        //     game_state
-        // );
         error = true;
     }
-
     if !correct_amount_stones_white(game_state) {
-        // info!(
-        //     "Game state: {:?} has incorrect amount of white stones on the board",
-        //     game_state
-        // );
         error = true;
     }
-
     if !outside_and_bearing_black(game_state) {
-        // info!(
-        //     "Game state: {:?} cannot have black stones caught and be in  bearing off at the same side",
-        //     game_state
-        // );
         error = true;
     }
-
     if !outside_and_bearing_white(game_state) {
-        // info!(
-        //     "Game state: {:?} cannot have white stones caught and be in  bearing off at the same side",
-        //     game_state
-        // );
         error = true;
     }
-
     if error {
         return Err(Box::new(std::fmt::Error));
     }
-
     Ok(())
 }

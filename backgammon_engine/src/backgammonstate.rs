@@ -266,9 +266,54 @@ mod test_black {
             white_outside: 0,
         };
         let m = BackgammonMove::new(Player::Black, 5, 3);
-        let valid = valid_move_white(&game_state, &m);
-        println!("{:?}", game_state);
+        let valid = valid_move_black(&game_state, &m);
         assert_eq!(valid , false);
+    }
+
+    #[test]
+    fn test_valid_moves_bearing_1() {
+        let game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: true,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::Black, 22, 25);
+        let valid = valid_move_black(&game_state, &m);
+        assert_eq!(valid , true);
+        let after_state = apply_move_black(&game_state, m);
+        println!("{:?}", game_state);
+        assert_eq!(after_state.black_outside , 1);
+        assert_eq!(after_state.black_bearing , true);
+    }
+
+    #[test]
+    fn test_valid_moves_bearing_2() {
+        let game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: true,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::Black, 22, 23);
+        let valid = valid_move_black(&game_state, &m);
+        assert_eq!(valid , true);
+        let after_state = apply_move_black(&game_state, m);
+        println!("{:?}", game_state);
+        assert_eq!(after_state.black_outside , 0);
+        assert_eq!(after_state.black_bearing , true);
     }
 }
 
@@ -284,7 +329,7 @@ mod test_white {
             ],
             white_caught: 0,
             black_caught: 0,
-            black_bearing: false,
+            black_bearing: true,
             white_bearing: false,
             ended: false,
             black_outside: 0,
@@ -579,29 +624,93 @@ mod test_white {
     #[test]
     fn test_valid_dice_1() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![1,2,3,4]);
+        let res = gen_poss_next_states(game_state, true, vec![1,2,3,4]);
         assert!(res.is_err());
     }
 
     #[test]
     fn test_valid_dice_2() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![1,2]);
+        let res = gen_poss_next_states(game_state, true, vec![1,2]);
         assert!(res.is_ok());
     }
 
     #[test]
     fn test_valid_dice_3() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![1,7]);
+        let res = gen_poss_next_states(game_state, true, vec![1,7]);
         assert!(res.is_err());
     }
 
     #[test]
     fn test_valid_dice_4() {
         let game_state = STARTING_GAME_STATE;
-        let res = generate_possible_next_states(game_state, true, vec![4,4,4,4]);
+        let res = gen_poss_next_states(game_state, true, vec![4,4,4,4]);
         assert!(res.is_ok());
+    }
+
+    #[test]
+    fn test_bearing_white() {
+        let mut game_state = BackgammonState {
+            board: [
+                0, 0, 0, 0, 0, -15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: false,
+            white_bearing: false,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let a : bool = is_white_bearing(&game_state);
+        assert_eq!(a, true);
+    }
+
+     #[test]
+    fn test_valid_moves_bearing_1() {
+        let game_state = BackgammonState {
+            board: [
+                0, 0, -5, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: true,
+            white_bearing: true,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::White, 2, 1);
+        let valid = valid_move_white(&game_state, &m);
+        assert_eq!(valid , true);
+        let after_state = apply_move_white(&game_state, m);
+        println!("{:?}", game_state);
+        assert_eq!(after_state.white_outside , 0);
+        assert_eq!(after_state.white_bearing , true);
+    }
+
+    #[test]
+    fn test_valid_moves_bearing_2() {
+        let game_state = BackgammonState {
+            board: [
+                0, -5, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0,
+            ],
+            white_caught: 0,
+            black_caught: 0,
+            black_bearing: true,
+            white_bearing: true,
+            ended: false,
+            black_outside: 0,
+            white_outside: 0,
+        };
+        let m = BackgammonMove::new(Player::White, 1, -2);
+        let valid = valid_move_white(&game_state, &m);
+        assert_eq!(valid , true);
+        let after_state = apply_move_white(&game_state, m);
+        println!("{:?}", game_state);
+        assert_eq!(after_state.white_outside , 1);
+        assert_eq!(after_state.white_bearing , true);
     }
 
 }
@@ -623,15 +732,28 @@ pub const STARTING_GAME_STATE: BackgammonState = BackgammonState {
     white_outside: 0,
 };
 
+
+/// The object that captures the current state of the game.
+/// The board array contains most of the information for the game state. To reduce
+/// recurring calculations some information are "cached" with booleans inside the object.
 #[derive(Clone, Hash, PartialEq, Eq, Copy, Debug)]
 pub struct BackgammonState {
+    /// Black checkers are represented by positive integers, white checker by negative integer.
+    /// If a field is empty it is indecated by a zero.
     pub board: [i32; 24],
+    /// the amount of checkers from the white side that have been beaton by black and have yet not been inserted back into the game
     pub white_caught: i32,
+    /// the amount of black checkers that have been beaton by black and have yet not been inserted back into the game
     pub black_caught: i32,
+    /// indicates that all checkers are in the home board of black and can be removed from the board
     pub black_bearing: bool,
+    /// indicates that all checkers are in the home board of white and can be removed from the board
     pub white_bearing: bool,
+    /// if the game has ended or not
     pub ended: bool,
+    /// the amount of black checkers already removed from the board
     pub black_outside: i32,
+    /// the amount of black checkers already removed from the board
     pub white_outside: i32,
 }
 
@@ -837,8 +959,25 @@ impl BackgammonState {
         let count = dice.iter().filter(|&&x| x >= 0 && x <= 6).count();
         return count == dice.len() && (dice.len() == 2 || dice.len() == 4) && four_dice(&dice)
     }
-
-    pub fn generate_possible_next_states(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Result<Vec<BackgammonState>, Box<dyn std::error::Error>> {
+    /// Implements an afterstate for the Markov decision process for thr game of backgammon (Reinforcement Learning an Introduction, 1998)
+    /// function: `f(s, d) -> s'` for the input game state `s`. And the random vector of dice `d`.  
+    /// It gives back all possible next states 
+    ///
+    /// # Simulate an Example game
+    ///  This simulates an example game in which black starts adn the same dice are used for every move and the strategy of taking the first entry of the next state array
+    ///  for both sides. 
+    /// ```
+    /// use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState , gen_poss_next_states};
+    /// let mut curr : BackgammonState = STARTING_GAME_STATE;
+    /// let mut is_black = true;
+    ///    while !curr.ended {
+    ///         let next_poss_states = gen_poss_next_states(curr, is_black, vec![1,2])
+    ///                        .expect("Failed to generate possible next states");
+    ///           current_game_state = next_poss_states[0]
+    ///           is_black = !is_black;
+    ///   }
+    /// ```
+    pub fn gen_poss_next_states(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Result<Vec<BackgammonState>, Box<dyn std::error::Error>> {
         if !is_state_valid(&game_state) {
             return Err("Invalid game state given".into())
         }
@@ -852,19 +991,14 @@ impl BackgammonState {
         }
     }  
 
-    // add cross product here!
     fn insert_stones_black(
         game_state: &BackgammonState,
         dice: &Vec<i32>,
     ) -> (BackgammonState, Vec<i32>) {
-    let mut dice_used = Vec::new();
-    
-        let mut new_game_state = game_state.clone();
-        //println!("game state at the beginning");
-        //println!("{:?}", new_game_state);
-        
+        let mut dice_used = Vec::new();
+        let mut new_game_state = game_state.clone(); 
         for &d in dice {
-            if game_state.black_caught > 0 && game_state.board[(d -1) as usize] >= 0 {
+            if game_state.black_caught > 0 && game_state.board[(d - 1) as usize] >= 0 {
             let move_black =  BackgammonMove::new(Player::Black, -1, d - 1);
                 let game_state_after_apply = apply_move_black(
                     &new_game_state,
@@ -877,20 +1011,16 @@ impl BackgammonState {
                 }
             }
         }
-        //println!("at the end:");
-        //println!("{:?}", new_game_state);
         (new_game_state, dice_used)
     }
 
-    // add cross product here!
+
     fn insert_stones_white(
     game_state: &BackgammonState,
     dice: &Vec<i32>,
     ) -> (BackgammonState, Vec<i32>) {
         let mut dice_used = Vec::new();
         let mut new_game_state = game_state.clone();
-        //println!("game state at the beginning");
-        //println!("{:?}", new_game_state);
         for &d in dice {
             if game_state.white_caught > 0 && game_state.board[(23 - d - 1) as usize] <= 0 {
                 let move_white =  BackgammonMove::new(Player::White, 24, 23 - d - 1);
@@ -905,8 +1035,6 @@ impl BackgammonState {
                 }
             }
         }
-       // println!("at the end:");
-        //println!("{:?}", new_game_state);
         (new_game_state, dice_used)
     }
 
@@ -1036,96 +1164,65 @@ impl BackgammonState {
         (-sum_white_stones + game_state.white_outside) == 15
     }
 
-    fn valid_move_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
-        return is_inbounce_black(game_state, move_black)
-            && moves_right_black(game_state, move_black) && move_black.player == Player::Black && move_black.from < move_black.to;
+    fn valid_move_black(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        mv.player == Player::Black && mv.from < mv.to
+        && is_inbounds_black(state, mv)
+        && moves_right_black(state, mv)
     }
 
-    fn moves_right_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
-        if game_state.black_bearing {
-            move_black.to > 23 || valid_to_field_black(game_state, move_black)
+    fn moves_right_black(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        if state.black_bearing {
+            mv.to > 23 || valid_to_field_black(state, mv)
         } else {
-            valid_to_field_black(game_state, move_black)
+            valid_to_field_black(state, mv)
         }
     }
 
-    fn valid_to_field_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
-            game_state.board[move_black.to as usize] <= LAST_FIELD
-            && (game_state.board[move_black.to as usize] >= 1
-                || game_state.board[move_black.to as usize] == 0
-                || game_state.board[move_black.to as usize] == -1)
+    fn valid_to_field_black(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        let field = state.board[mv.to as usize];
+        field == 0 || field == -1 || field >= 1
     }
 
-    fn valid_to_field_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
-        game_state.board[move_white.to as usize] >= FIRST_FIELD
-        &&(game_state.board[move_white.to as usize] <= -1
-                || game_state.board[move_white.to as usize] == 0
-                || game_state.board[move_white.to as usize] == 1)
-    }
-
-    fn is_inbounce_black(game_state: &BackgammonState, move_black: &BackgammonMove) -> bool {
-        if game_state.black_bearing {
-            move_black.from >= 18 // && move_black.to <= 24
-        } else if game_state.black_caught > 0 {
-            move_black.from == -1
+    fn is_inbounds_black(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        if state.black_bearing {
+            mv.from >= 18
+        } else if state.black_caught > 0 {
+            mv.from == -1
         } else {
-            in_bounce(move_black)
+            in_bounce(mv)
+        }
+    }
+    
+    fn valid_move_white(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        mv.player == Player::White && mv.to < mv.from
+        && is_inbounds_white(state, mv)
+        && moves_right_white(state, mv)
+    }
+
+    fn moves_right_white(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        if state.white_bearing {
+            mv.to < 0 || valid_to_field_white(state, mv)
+        } else {
+            valid_to_field_white(state, mv)
         }
     }
 
-    fn is_inbounce_white(game_state : &BackgammonState, move_white : &BackgammonMove) -> bool {
-        if game_state.white_bearing {
-            move_white.from <= 6
-        }else if game_state.white_caught > 0 {
-            move_white.from == 24
+    fn valid_to_field_white(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        let field = state.board[mv.to as usize];
+        field <= -1 || field == 0 || field == 1
+    }
+
+    fn is_inbounds_white(state: &BackgammonState, mv: &BackgammonMove) -> bool {
+        if state.white_bearing {
+            mv.from <= 6
+        } else if state.white_caught > 0 {
+            mv.from == 24
         } else {
-            in_bounce(move_white)
+            in_bounce(mv)
         }
     }
 
-    fn in_bounce(b_move: &BackgammonMove) -> bool {
-        (b_move.from >= FIRST_FIELD && b_move.from <= LAST_FIELD)
-            && (b_move.to >= FIRST_FIELD && b_move.to <= LAST_FIELD)
+    fn in_bounce(mv: &BackgammonMove) -> bool {
+        mv.from >= FIRST_FIELD && mv.from <= LAST_FIELD
+        && mv.to >= FIRST_FIELD && mv.to <= LAST_FIELD
     }
-
-    fn valid_move_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
-        return is_inbounce_white(game_state, move_white)
-        && moves_right_white(game_state, move_white) && move_white.player == Player::White && move_white.from > move_white.to;
-    }
-
-    fn moves_right_white(game_state: &BackgammonState, move_white: &BackgammonMove) -> bool {
-        if game_state.white_bearing {
-            move_white.to < 0 || valid_to_field_white(game_state, move_white)
-        } else {
-            valid_to_field_white(game_state, move_white)
-        }
-    }
-
-    // fn possible_bearing_moves_black(
-    //     game_state: &BackgammonState,
-    //     dice: i32,
-    // ) -> Vec<BackgammonMove> {
-    //     return (18..23)
-    //         .filter(|&x| game_state.board[x] > 0)
-    //         .filter(|&x| {
-    //             let m = BackgammonMove::new(Player::Black, x as i32, x as i32 + dice);
-    //             valid_move_black(game_state, &m)
-    //         })
-    //         .map(|x| BackgammonMove::new(Player::Black, x as i32, x as i32 + dice))
-    //         .collect();
-    // }
-
-    // fn possible_bearing_moves_white(
-    //     game_state: &BackgammonState,
-    //     dice: i32,
-    // ) -> Vec<BackgammonMove> {
-    //     return (0..6)
-    //     .filter(|&x| game_state.board[x] <0 )
-    //     .filter(|&x| {
-    //         let m = BackgammonMove::new(Player::White, x as i32, x as i32 - dice);
-    //         valid_move_white(game_state, &m)
-    //     })
-    //     .map(|x| BackgammonMove::new(Player::White, x as i32, x as i32 - dice))
-    //     .collect();
-    // }
-

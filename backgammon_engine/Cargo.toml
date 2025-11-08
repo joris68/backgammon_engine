@@ -2,19 +2,15 @@
 name = "backgammon_engine"
 version = "1.0.0"
 edition = "2024"
-description = "A Rust library that implements the core game logic and transitions from the game for Backgammon. It models the Markov decision Process for the game of backgammon"
+description = "A Rust library that implements the core game logic and state transitions from the game for Backgammon. It models the Markov decision Process for the game of backgammon."
 authors = ["joris68"]
 license = "MIT"
-repository = ""
-homepage = ""
+repository = "https://github.com/joris68/backgammon_engine"
+homepage = "https://github.com/joris68/backgammon_engine"
 documentation = ""
 readme = "README.md"
-keywords = ["backgammon", "game", "engine", "ai", "boardgame", "tavla"]
+keywords = ["backgammon", "game", "engine", "machine learning", "boardgame", "tavla"]
 categories = ["game-engines", "algorithms", "simulation", "monte-carlo"]
 
 [dependencies]
-log = "0.4.28"
 
-[dev-dependencies]
-rand_distr = "0.5.1"
-rand = "0.9.2"
