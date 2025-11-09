@@ -9,7 +9,7 @@ repository = "https://github.com/joris68/backgammon_engine"
 homepage = "https://github.com/joris68/backgammon_engine"
 documentation = "https://github.com/joris68/backgammon_engine"
 readme = "../README.md"
-keywords = ["backgammon", "game", "engine", "reinforcement", "markov"]
+keywords = ["backgammon", "game", "engine", "reinforcement"]
 categories = ["data-structures", "mathematics"]
 
 [dependencies]
