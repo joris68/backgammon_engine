@@ -358,25 +358,6 @@ mod test_white {
     }
 
 
-    // #[test]
-    // fn test_bearing_moves() {
-    //     let initial_state = BackgammonState {
-    //         board: [
-    //             0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 4,
-    //         ],
-    //         white_caught: 0,
-    //         black_caught: 0,
-    //         black_bearing: false,
-    //         white_bearing: false,
-    //         ended: false,
-    //         black_outside: 0,
-    //         white_outside: 0,
-    //     };
-    //     let dice = 3;
-    //     let moves = possible_bearing_moves_white(&initial_state, dice);
-    //     assert_eq!(moves.len(), 1)
-    // }
-
     #[test]
     fn test_get_unused_items_1() {
         let dice = vec![1,2];
@@ -959,24 +940,38 @@ impl BackgammonState {
         let count = dice.iter().filter(|&&x| x >= 0 && x <= 6).count();
         return count == dice.len() && (dice.len() == 2 || dice.len() == 4) && four_dice(&dice)
     }
-    /// Implements an afterstate for the Markov decision process for thr game of backgammon (Reinforcement Learning an Introduction, 1998)
+    /// Implements the state transition function for the game of Backgammon.
     /// function: `f(s, d) -> s'` for the input game state `s`. And the random vector of dice `d`.  
-    /// It gives back all possible next states 
+    /// It gives back all possible next states from the given game state with the thrown dice.
+    /// The resulting vector always has len > 0 and the states given back have no particular ordering.
     ///
     /// # Simulate an Example game
-    ///  This simulates an example game in which black starts adn the same dice are used for every move and the strategy of taking the first entry of the next state array
+    ///  This simulates an example game in which black starts and the same dice are used for every move and the strategy of taking the first entry of the next state array
     ///  for both sides. 
     /// ```
-    /// use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState , gen_poss_next_states};
-    /// let mut curr : BackgammonState = STARTING_GAME_STATE;
-    /// let mut is_black = true;
-    ///    while !curr.ended {
-    ///         let next_poss_states = gen_poss_next_states(curr, is_black, vec![1,2])
-    ///                        .expect("Failed to generate possible next states");
-    ///           current_game_state = next_poss_states[0]
-    ///           is_black = !is_black;
-    ///   }
+    /// use backgammon_engine::backgammonstate::{STARTING_GAME_STATE, BackgammonState, gen_poss_next_states};
+    ///
+    /// fn pick_next_move(next_poss_states : &Vec<BackgammonState>, rng: &mut impl Rng) -> BackgammonState {
+    ///      return next_poss_states[0];
+    ///}
+    ///
+    ///fn simulate_game() {
+    ///      let mut current_game_state = STARTING_GAME_STATE;
+    ///      let mut is_black = true;
+    ///      while !current_game_state.ended {
+    ///             let dice = generate_dice(&mut rng);
+    ///              let next_poss_states = gen_poss_next_states(current_game_state, is_black, vec![1,2])
+    ///                                     .expect("Failed to generate possible next states");
+    ///                current_game_state = pick_next_move(&next_poss_states, &mut rng);
+    ///                 is_black = !is_black;
+    ///      }  
+    /// }
+    ///
+    /// fn main() {
+    ///      simulate_game();
+    /// }
     /// ```
+    /// More detailed documentation can be found in the readme.md in the corresponding Github project.
     pub fn gen_poss_next_states(mut game_state : BackgammonState, is_black : bool, dice : Vec<i32>) -> Result<Vec<BackgammonState>, Box<dyn std::error::Error>> {
         if !is_state_valid(&game_state) {
             return Err("Invalid game state given".into())

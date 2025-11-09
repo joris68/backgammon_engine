@@ -1,6 +1,4 @@
-use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState};
-use backgammon_engine::backgammonstate::gen_poss_next_states;
-use backgammon_engine::invariants::backgammonstate_invariant;
+use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState, gen_poss_next_states};
 
 #[test]
 fn test_invalid_state_input() {
