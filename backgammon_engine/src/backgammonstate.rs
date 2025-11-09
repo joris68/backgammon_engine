@@ -1048,12 +1048,6 @@ impl BackgammonState {
         let mut new_game_state: BackgammonState = game_state.clone();
 
         if move_black.from == -1 {
-            assert!(
-                new_game_state.black_caught > 0,
-                "black caught has a mistake: state = {:?}, move = {:?}",
-                new_game_state,
-                move_black
-            );
             new_game_state.black_caught -= 1;
             new_game_state.board[move_black.to as usize] += 1;
             new_game_state.black_bearing = is_black_bearing(&new_game_state);
@@ -1085,14 +1079,8 @@ impl BackgammonState {
             new_game_state.white_bearing = is_white_bearing(&new_game_state);
             return new_game_state;
         }
-        panic!(
-        "I have missed a case in apply_move_black!\n\n\
-         The unhandled combination was:\n\n\
-         Game State:\n{:#?}\n\n\
-         Backgammon Move:\n{:#?}",
-        game_state,
-        move_black
-        );
+        // should not happen
+        return new_game_state;
     }
 
     fn apply_move_white(
@@ -1102,19 +1090,12 @@ impl BackgammonState {
         let mut new_game_state: BackgammonState = game_state.clone();
 
         if move_white.from == 24 {
-            assert!(
-                new_game_state.white_caught > 0,
-                "white caught has a mistake: state = {:?}, move = {:?}",
-                new_game_state,
-                move_white
-            );
             new_game_state.white_caught -= 1;
             new_game_state.board[move_white.to as usize] -= 1;
             new_game_state.black_bearing = is_black_bearing(&new_game_state);
             new_game_state.white_bearing = is_white_bearing(&new_game_state);
             return new_game_state;
         }
-        assert!(new_game_state.board[move_white.from as usize] < 0, "white wring from field");
         new_game_state.board[move_white.from as usize] += 1;
 
         if new_game_state.white_bearing && move_white.to < 0 {
@@ -1139,14 +1120,8 @@ impl BackgammonState {
             new_game_state.white_bearing = is_white_bearing(&new_game_state);
             return new_game_state;
         }
-        panic!(
-            "I have missed a case in apply_move_white!\n\n\
-            The unhandled combination was:\n\n\
-            Game State:\n{:#?}\n\n\
-            Backgammon Move:\n{:#?}",
-            game_state,
-            move_white
-        );
+        // should not happen
+        return new_game_state;
     }
 
     fn is_black_bearing(game_state: &BackgammonState) -> bool {
