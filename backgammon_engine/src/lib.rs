@@ -1,3 +1,3 @@
-pub mod backgammonmove;
+mod backgammonmove;
 pub mod backgammonstate;
-pub mod invariants;
+mod invariants;

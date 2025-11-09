@@ -1,6 +1,4 @@
-use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState};
-use backgammon_engine::backgammonstate::gen_poss_next_states;
-use backgammon_engine::invariants::backgammonstate_invariant;
+use backgammon_engine::backgammonstate::{ STARTING_GAME_STATE, BackgammonState, gen_poss_next_states};
 
 #[test]
 fn test_invalid_state_input() {
@@ -18,7 +16,7 @@ fn test_invalid_state_input() {
     };
     let dice = vec![1,2];
     let is_black = true;
-    let res = gen_poss_next_states(game_state, is_black, dice.clone());
+    let res = gen_poss_next_states(&game_state, is_black, &dice);
     assert!(res.is_err());
 }
 
@@ -38,7 +36,7 @@ fn test_invalid_dice_input() {
     };
     let dice = vec![1,7];
     let is_black = true;
-    let res = gen_poss_next_states(game_state, is_black, dice.clone());
+    let res = gen_poss_next_states(&game_state, is_black, &dice);
     assert!(res.is_err());
 }
 
@@ -58,6 +56,6 @@ fn test_invalid_dice_input_2() {
     };
     let dice = vec![4,4,4,3];
     let is_black = true;
-    let res = gen_poss_next_states(game_state, is_black, dice.clone());
+    let res = gen_poss_next_states(&game_state, is_black, &dice);
     assert!(res.is_err());
 }
