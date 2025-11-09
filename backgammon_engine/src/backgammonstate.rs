@@ -947,8 +947,9 @@ impl BackgammonState {
     /// Implements the state transition function for the game of Backgammon.
     /// function: `f(s, d) -> s'` for the input game state `s`. And the random vector of dice `d`.  
     /// It gives back all possible next states from the given game state with the thrown dice.
-    /// The resulting vector always has len > 0 and the states given back have no particular ordering.
-    ///
+    /// The resulting vector always has len > 0, even when no possible moves are possible with the current dice and 
+    /// and game state, the input game state will be given back. The vector does not implement a specific ordering.
+    /// The function returns an error when the game state input to the function is invalid or the vector of dice given to the function are invalid.
     /// # Simulate an Example game
     ///  This simulates an example game in which black starts and the same dice are used for every move and the strategy of taking the first entry of the next state array
     ///  for both sides. 
