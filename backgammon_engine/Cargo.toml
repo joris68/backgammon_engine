@@ -8,7 +8,7 @@ license = "MIT"
 repository = "https://github.com/joris68/backgammon_engine"
 homepage = "https://github.com/joris68/backgammon_engine"
 documentation = ""
-readme = "README.md"
+readme = "../README.md"
 keywords = ["backgammon", "game", "engine", "machine learning", "boardgame", "tavla"]
 categories = ["game-engines", "algorithms", "simulation", "monte-carlo", "machine learning"]
 
