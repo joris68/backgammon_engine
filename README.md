@@ -1,9 +1,9 @@
-# Backgammon Engine API
+# Backgammon Engine
 This crate implements the environment - the rules, moves and state transitions - for the game of Backgammon in form an engine API.
 In a more formal manner, the game environment can be described as a finite Markov Decision Process (MDP).
 The MDP is characterizes as a random sequence of states $s \in S$ which are all possible legal game states and
 actions (game moves) taken by one player to get from state $s$  to $s'$.
-The game state is represented by the following datastructure:
+The game state is represented by the following struct:
 ```
 pub struct BackgammonState {
     pub board: [i32; 24],
@@ -25,13 +25,13 @@ $$
     f: (s, \vec{x}) -> S'
 $$
 
-Backgammon is played with two dice, so a state transition consists of two submoves (when doubles are thrown even four submoves). Oftentimes different move can lead to the same resulting state. Hence instead of given back the set aóf all possible actions that can be performed at this state of the game,  
-
+Backgammon is played with two dice, so a state transition consists of two submoves (when doubles are thrown even four submoves). Oftentimes different move can lead to the same resulting state. Hence instead of given back the set of all possible actions that can be performed at this state of the game, 
+the set of all possible distinct next states are given back. Figure 1 shows the MDP visually and the phenomenon that a sequence of different moves can lead to the same afterstate. Each arrow represents the uilization of a die. Intermediate states are shown with dotted circles. 
 <p align="center">
   <img src="./MDP_model.png" width="400">
 </p>
 
-Oftentimes the goal in Reinforcement learning is that the agent learns a policy (strategy) to pick the next state form all possible next states that optimize the probability of winning in some capacity. This libary helps providing the environment for determining the best strategy for algorithmic backgammon in a computationally efficient way.
+Oftentimes the goal in Reinforcement learning is that the agent learns a policy (strategy) to pick the next state from all possible next states that optimize the probability of winning in some capacity. This libary helps providing the environment for determining the best strategy for algorithmic backgammon in a computationally efficient way.
 
 # Example usage of the API
 This simulates an example game in which black starts adn the same dice are used for every move and the strategy of taking the first entry of the next state array for both sides. 
@@ -61,42 +61,33 @@ fn pick_next_move(next_poss_states : &Vec<BackgammonState>, rng: &mut impl Rng) 
 
 fn simulate_game() {
     let mut rng = thread_rng();
-
-    for x in 0..number_of_games {
-        let mut counter = 0;
-        let mut current_game_state = STARTING_GAME_STATE;
-        let mut is_black = true;
-        while !current_game_state.ended {
+    let mut counter = 0;
+    let mut current_game_state = STARTING_GAME_STATE;
+    let mut is_black = true;
+    while !current_game_state.ended {
             let dice = generate_dice(&mut rng);
-            let next_poss_states = gen_poss_next_states(current_game_state, is_black, dice.clone())
+            let next_poss_states = gen_poss_next_states(&current_game_state, is_black, &dice)
                             .expect("Failed to generate possible next states");
             current_game_state = pick_next_move(&next_poss_states, &mut rng);
             is_black = !is_black;
-        }
     }
 }
 
 fn main() {
-    test_public_api();
+    simulate_game();
 }
 ```
 
-This crate implements
-- Markov decision process and mathematical tuple
-- Afterstate function and formula
-- State object and boolean caching
-- no dependencies
-- tested
-
 # Testing Methodology
-- invariants
-- it is hard to prove that a program is correct ==> negative space programming
-- monte carlo simulation of integration testing
-- 1000000 games simulated without panicking
+In probability theory it is often easier to calculate the complement of the event you
+are interested in rather the event itself: `P(E) = 1−P(¬E)'. Analog it is much easier show that a program is incorrect rather than proving
+the correctness of the program, which has proven to be quite hard for the backgammon engine [2]. To test the engine we simulated 1000000 games and after each state transitions all possible next states ware tested against states invariants. The program never panicked which gives confidence that the engine never transitions to an invalid state.
+
 
 # References
 
 [1]: Sutton, R. S., & Barto, A. G. (2015). *Reinforcement Learning: An Introduction*. MIT Press.
+[2]: Back, R.-J. (2008). *Invariant Based Programming: Basic Approach and Teaching Experiences*. Formal Aspects of Computing, 21(3), 227–244. [https://doi.org/10.1007/s00165-008-0070-y](https://doi.org/10.1007/s00165-008-0070-y)
 
 
 # Contributing

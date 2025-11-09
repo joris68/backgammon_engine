@@ -703,7 +703,7 @@ mod test_white {
 
 const LAST_FIELD: i32 = 23;
 const FIRST_FIELD: i32 = 0;
-
+/// The starting game start for each game of Backgammon.
 pub const STARTING_GAME_STATE: BackgammonState = BackgammonState {
     board: [
         2, 0, 0, 0, 0, -5, 0, -3, 0, 0, 0, 5, -5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, -2,
