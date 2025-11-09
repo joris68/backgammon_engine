@@ -9,8 +9,8 @@ repository = "https://github.com/joris68/backgammon_engine"
 homepage = "https://github.com/joris68/backgammon_engine"
 documentation = "https://github.com/joris68/backgammon_engine"
 readme = "../README.md"
-keywords = ["backgammon", "game", "engine", "machine learning", "boardgame"]
-categories = ["game-engines", "algorithms", "simulation", "monte-carlo", "machine learning"]
+keywords = ["backgammon", "game", "engine", "reinforcement_learning", "boardgame"]
+categories = ["game_engine", "algorithms", "simulation", "monte_carlo", "machine_learning"]
 
 [dependencies]
 
