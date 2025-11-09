@@ -80,7 +80,7 @@ fn main() {
 
 # Testing Methodology
 In probability theory it is often easier to calculate the complement of the event you
-are interested in rather the event itself: `P(E) = 1−P(¬E)'. Analog it is much easier show that a program is incorrect rather than proving
+are interested in rather the event itself: P(E) = 1−P(¬E). Analog it is much easier show that a program is incorrect rather than proving
 the correctness of the program, which has proven to be quite hard for the backgammon engine [2]. To test the engine we simulated 1000000 games and after each state transitions all possible next states ware tested against states invariants. The program never panicked which gives confidence that the engine never transitions to an invalid state.
 
 
